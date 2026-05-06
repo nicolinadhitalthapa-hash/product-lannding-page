@@ -30,3 +30,7 @@ Order saved to sheet but email sending failed [Error: Invalid login: 535 Incorre
  GET /thank-you?orderId=DRY-MOO9NDQY-1786&product=Dry+Mango+-+2+Packs+-+500g&quantity=5&total=3495&emailStatus=pending 200 in 643ms
  ✓ Compiled in 2.1s (685 modules)
  ✓ Compiled in 150ms (269 modules)
+ GET /thank-you?orderId=DRY-MOO9NDQY-1786&product=Dry+Mango+-+2+Packs+-+500g&quantity=5&total=3495&emailStatus=pending 200 in 213ms
+ GET / 200 in 23ms
+ GET / 200 in 24ms
+ GET /checkout?option=double-pack&quantity=1&product=2+Packs+-+500g 200 in 35ms
