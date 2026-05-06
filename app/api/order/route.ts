@@ -6,12 +6,37 @@ import { createOrderRecord } from "@/lib/order";
 import { siteConfig } from "@/lib/site-config";
 import { orderSchema } from "@/lib/validation";
 
+function isAllowedOrigin(request: Request) {
+  const requestOrigin = request.headers.get("origin");
+
+  if (!requestOrigin) {
+    return true;
+  }
+
+  const allowedOrigins = [
+    process.env.FRONTEND_URL,
+    process.env.NEXT_PUBLIC_SITE_URL,
+    "http://localhost:3000",
+    "http://127.0.0.1:3000"
+  ].filter(Boolean) as string[];
+
+  try {
+    const requestUrl = new URL(request.url);
+    const normalizedAllowedOrigins = new Set(
+      allowedOrigins.map((origin) => new URL(origin).origin)
+    );
+
+    normalizedAllowedOrigins.add(requestUrl.origin);
+
+    return normalizedAllowedOrigins.has(new URL(requestOrigin).origin);
+  } catch {
+    return false;
+  }
+}
+
 export async function POST(request: Request) {
   try {
-    const allowedOrigin = process.env.FRONTEND_URL;
-    const requestOrigin = request.headers.get("origin");
-
-    if (allowedOrigin && requestOrigin && allowedOrigin !== requestOrigin) {
+    if (!isAllowedOrigin(request)) {
       return NextResponse.json(
         {
           error: "This origin is not allowed to submit orders."
